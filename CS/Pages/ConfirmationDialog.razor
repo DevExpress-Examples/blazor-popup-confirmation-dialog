@@ -1,0 +1,39 @@
+﻿@using DevExpress.Blazor
+@implements IDisposable
+
+<DxPopup @bind-Visible="@confirmationShown" HeaderText="@headerText" HeaderCssClass="confirmation-dialog-header"
+         ShowCloseButton="false" CloseOnOutsideClick="false" CloseOnEscape="false" Width="200px">
+    <BodyContentTemplate>
+        <div class="confirmation-dialog-content">
+            <DxButton Text="Yes" Click="YesClick" RenderStyle="ButtonRenderStyle.Primary"></DxButton>
+            <DxButton Text="No" Click="NoClick" RenderStyle="ButtonRenderStyle.Secondary"></DxButton>
+        </div>
+    </BodyContentTemplate>
+</DxPopup>
+
+@code {
+    bool confirmationShown { get; set; } = false;
+    string headerText { get; set; } = "";
+    TaskCompletionSource<bool> tcs;
+
+    public Task<bool> ConfirmOperation(string text) {
+        headerText = text;
+        confirmationShown = true;
+        InvokeAsync(StateHasChanged);
+        tcs = new TaskCompletionSource<bool>();
+        tcs.Task.ContinueWith(_ => {
+            confirmationShown = false;
+        });
+        return tcs.Task;
+    }
+    private void YesClick() {
+        tcs.SetResult(true);
+    }
+    private void NoClick() {
+        tcs.SetResult(false);
+    }
+    public void Dispose() {
+        tcs = null;
+    }
+}
+

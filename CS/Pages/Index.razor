@@ -1,0 +1,197 @@
+﻿@page "/"
+
+@using System.Globalization;
+
+<DxScheduler StartDate="@DateTime.Today"
+             DataStorage="@DataStorage"
+             GroupType="SchedulerGroupType.Resource"
+             VisibleResourcesDataSource="VisibleResources"
+             CssClass="w-100"
+             AppointmentRemoving="OnAppointmentRemoving">
+    <DxSchedulerDayView DayCount="1" ShowWorkTimeOnly="true"></DxSchedulerDayView>
+    <DxSchedulerWeekView ShowWorkTimeOnly="true"></DxSchedulerWeekView>
+    <DxSchedulerWorkWeekView ShowWorkTimeOnly="true"></DxSchedulerWorkWeekView>
+    <DxSchedulerMonthView ShowWorkDaysOnly="true" MonthCount="1"></DxSchedulerMonthView>
+    <DxSchedulerTimelineView Duration="@TimeSpan.FromHours(48)" CellMinWidth="80">
+        <Scales>
+            <DxSchedulerTimeScale Unit="@SchedulerTimeScaleUnit.Day" UnitCount="1"></DxSchedulerTimeScale>
+            <DxSchedulerTimeScale Unit="@SchedulerTimeScaleUnit.Hour" UnitCount="2"></DxSchedulerTimeScale>
+        </Scales>
+    </DxSchedulerTimelineView>
+</DxScheduler>
+<ConfirmationDialog @ref="confDialog"></ConfirmationDialog>
+
+@code {
+    List<Appointment> appts { get; set; } = new List<Appointment>();
+    ConfirmationDialog confDialog;
+    protected override void OnInitialized() {
+        appts = RecurringAppointmentCollection.GetAppointments();
+        DataStorage.AppointmentsSource = appts;
+        base.OnInitialized();
+    }
+    async Task OnAppointmentRemoving(SchedulerAppointmentOperationEventArgs args) {
+        args.Cancel = !(await confDialog.ConfirmOperation("Are you sure?"));
+    }
+    DxSchedulerDataStorage DataStorage = new DxSchedulerDataStorage() {
+            AppointmentsSource = null,
+            AppointmentMappings = new DxSchedulerAppointmentMappings() {
+                Type = "AppointmentType",
+                Start = "StartDate",
+                End = "EndDate",
+                Subject = "Caption",
+                AllDay = "AllDay",
+                Location = "Location",
+                Description = "Description",
+                LabelId = "Label",
+                StatusId = "Status",
+                RecurrenceInfo = "Recurrence",
+                ResourceId = "ResourceId"
+            },
+            ResourcesSource = ResourceCollection.GetResourcesForGrouping(),
+            ResourceMappings = new DxSchedulerResourceMappings() {
+                Id = "Id",
+                Caption = "Name",
+                BackgroundCssClass = "BackgroundCss",
+                TextCssClass = "TextCss"
+            }
+        };
+    List<Resource> VisibleResources = ResourceCollection.GetResources().Take(2).ToList();
+
+    public static partial class RecurringAppointmentCollection {
+        public static List<Appointment> GetAppointments() {
+            DateTime date = DateTimeUtils.GetBeginOfMonth(DateTime.Now);
+            date = DateTimeUtils.GetWeekStart(date);
+            return new List<Appointment>() {
+                new Appointment {
+                    AppointmentType = 1,
+                    Caption = "Watercolor Landscape",
+                    Label = 5,
+                    StartDate = date + (new TimeSpan(2, 13, 0, 0)),
+                    EndDate = date + (new TimeSpan(2, 14, 30, 0)),
+                    Recurrence = string.Format("<RecurrenceInfo Start=\"{0}\" End=\"{1}\" WeekDays=\"36\" Id=\"04dcc127-df56-49d7-baff-ce4b6264addd\" OccurrenceCount=\"10\" Range=\"1\" Type=\"1\" />", ToString(date + (new TimeSpan(2, 13, 0, 0))), ToString(date + (new TimeSpan(2, 14, 30, 0)))),
+                    ResourceId = 0
+                },
+                new Appointment {
+                    AppointmentType = 1,
+                    Caption = "Oil Painting for Beginners",
+                    Label = 2,
+                    StartDate = date + (new TimeSpan(1, 12, 0, 0)),
+                    EndDate = date + (new TimeSpan(1, 13, 30, 0)),
+                    Recurrence = string.Format("<RecurrenceInfo Start=\"{0}\" End=\"{1}\" WeekDays=\"18\" Id=\"72e3db8f-cdb6-4aaa-afe1-e3c6b80ce99e\" OccurrenceCount=\"10\" Range=\"1\" Type=\"1\" />", ToString(date + (new TimeSpan(1, 12, 0, 0))), ToString(date + (new TimeSpan(1, 13, 30, 0)))),
+                    ResourceId = 0
+                },
+                new Appointment {
+                    AppointmentType = 1,
+                    Caption = "Testing",
+                    Label = 8,
+                    StartDate = date + (new TimeSpan(1, 14, 0, 0)),
+                    EndDate = date + (new TimeSpan(1, 15, 0, 0)),
+                    Recurrence = string.Format("<RecurrenceInfo Start=\"{0}\" End=\"{1}\" WeekDays=\"2\" Id=\"15129fd3-9eb0-4861-8c43-c61844137f17\" OccurrenceCount=\"2\" Frequency=\"2\" Range=\"1\" Type=\"1\" />", ToString(date + (new TimeSpan(1, 14, 0, 0))), ToString(date + (new TimeSpan(1, 15, 0, 0)))),
+                    ResourceId = 1
+                },
+                new Appointment {
+                    AppointmentType = 0,
+                    Caption = "Meeting of Instructors",
+                    Label = 1,
+                    StartDate = DateTime.Today + (new TimeSpan(0, 10, 0, 0)),
+                    EndDate = DateTime.Today + (new TimeSpan(0, 10, 45, 0)),
+                     ResourceId = 1
+                },
+                new Appointment {
+                    AppointmentType = 1,
+                    Caption = "Monthly Planning",
+                    Label = 1,
+                    StartDate = date + (new TimeSpan(3, 16, 0, 0)),
+                    EndDate = date + (new TimeSpan(3, 17, 0, 0)),
+                    Recurrence = string.Format("<RecurrenceInfo Start=\"{0}\" End=\"{1}\" DayNumber=\"24\" WeekOfMonth=\"0\" Id=\"cd9da802-d166-47d1-a8df-1101fcc50d53\" OccurrenceCount=\"2\" Range=\"1\" Type=\"2\" />", ToString(date + (new TimeSpan(3, 16, 0, 0))), ToString(date + (new TimeSpan(3, 17, 0, 0)))),
+                    ResourceId = 2
+                },
+                new Appointment {
+                    AppointmentType = 1,
+                    Caption = "Annual Open Day",
+                    Label = 6,
+                    StartDate = date + (new TimeSpan(27, 10, 30, 0)),
+                    EndDate = date + (new TimeSpan(27, 14, 0, 0)),
+                    Recurrence = string.Format("<RecurrenceInfo Start=\"{0}\" Month=\"{1}\" DayNumber=\"{2}\" WeekOfMonth=\"0\" Id=\"bd5dc726-0fa6-4965-99e0-bf69063218e6\" Type=\"3\" />", ToString(date + (new TimeSpan(27, 10, 30, 0))), (date + (new TimeSpan(27, 10, 30, 0))).Month, (date + (new TimeSpan(27, 10, 30, 0))).Day),
+                    ResourceId = 3
+                }
+            };
+        }
+        private static string ToString(DateTime dateTime) {
+            return dateTime.ToString(CultureInfo.InvariantCulture);
+        }
+    }
+    public static partial class ResourceCollection {
+        public static List<Resource> GetResourcesForGrouping() {
+            return GetResources().Take(3).ToList();
+        }
+        public static List<Resource> GetResources() {
+            return new List<Resource>() {
+                new Resource() { Id=0 , Name="Nancy Davolio", GroupId=100, BackgroundCss="dx-green-color", TextCss="text-white" },
+                new Resource() { Id=1 , Name="Andrew Fuller", GroupId=101, BackgroundCss="dx-orange-color", TextCss="text-white" },
+                new Resource() { Id=2 , Name="Janet Leverling", GroupId=100, BackgroundCss="dx-purple-color", TextCss="text-white" },
+                new Resource() { Id=3 , Name="Margaret Peacock", GroupId=101, BackgroundCss="dx-indigo-color", TextCss="text-white" },
+                new Resource() { Id=4 , Name="Steven Buchanan", GroupId=100, BackgroundCss="dx-red-color", TextCss="text-white" }
+            };
+        }
+        public static List<Resource> GetResourceGroups() {
+            return new List<Resource>() {
+                new Resource() { Id=100, Name="Sales and Marketing", IsGroup=true },
+                new Resource() { Id=101, Name="Engineering", IsGroup=true }
+            };
+        }
+    }
+    public class Appointment {
+        public Appointment() { }
+        public int AppointmentType { get; set; }
+        public DateTime StartDate { get; set; }
+        public DateTime EndDate { get; set; }
+        public string Caption { get; set; }
+        public string Description { get; set; }
+        public string Location { get; set; }
+        public int? Label { get; set; }
+        public int Status { get; set; }
+        public bool AllDay { get; set; }
+        public string Recurrence { get; set; }
+        public int? ResourceId { get; set; }
+        public bool Accepted { get; set; }
+    }
+    public class Resource {
+        public int Id { get; set; }
+        public int? GroupId { get; set; }
+        public string Name { get; set; }
+        public bool IsGroup { get; set; }
+        public string TextCss { get; set; }
+        public string BackgroundCss { get; set; }
+        public string ImageFileName => $"employees/{Id + 1}.jpg";
+        public override bool Equals(object obj) {
+            Resource resource = obj as Resource;
+            return resource != null && resource.Id == Id;
+        }
+        public override int GetHashCode() {
+            return Id;
+        }
+    }
+    public static class DateTimeUtils {
+        public static DateTime GetWeekStart(DateTime date) {
+            return date.DayOfWeek == DayOfWeek.Sunday ? ValidWeekStart(date.Date) : ValidWeekStart(date.Date - CreateWeekOffset(date, DayOfWeek.Sunday));
+        }
+        public static DateTime GetBeginOfMonth(DateTime date) {
+            return new DateTime(date.Year, date.Month, 1);
+        }
+        static DateTime ValidWeekStart(DateTime date) {
+            TimeSpan weekSpan = new TimeSpan(7, 0, 0, 0);
+            DateTime baseDate = date.Date;
+            if (DateTime.MaxValue - date < weekSpan)
+                return baseDate - weekSpan;
+            return baseDate;
+        }
+        static TimeSpan CreateWeekOffset(DateTime date, DayOfWeek firstDayOfWeek) {
+            int offset = (date.DayOfWeek + 7 - firstDayOfWeek) % 7;
+            TimeSpan result = TimeSpan.FromDays(offset);
+            if (date.Ticks < result.Ticks)
+                result = TimeSpan.FromDays(offset - 7);
+            return result;
+        }
+    }
+}
