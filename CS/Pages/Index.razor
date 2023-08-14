@@ -30,7 +30,8 @@
         base.OnInitialized();
     }
     async Task OnAppointmentRemoving(SchedulerAppointmentOperationEventArgs args) {
-        args.Cancel = !(await confDialog.ConfirmOperation("Are you sure?"));
+        args.Cancel = !(await confDialog.ConfirmOperation("Delete an appointment",
+            "Are you sure you want to delete this appointment?"));
     }
     DxSchedulerDataStorage DataStorage = new DxSchedulerDataStorage() {
             AppointmentsSource = null,
