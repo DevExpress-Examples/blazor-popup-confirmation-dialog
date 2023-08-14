@@ -1,3 +1,7 @@
+<!-- default badges list -->
+[![](https://img.shields.io/badge/Open_in_DevExpress_Support_Center-FF7200?style=flat-square&logo=DevExpress&logoColor=white)](https://supportcenter.devexpress.com/ticket/details/T1183417)
+[![](https://img.shields.io/badge/📖_How_to_use_DevExpress_Examples-e9f6fc?style=flat-square)](https://docs.devexpress.com/GeneralInformation/403183)
+<!-- default badges end -->
 # Popup for Blazor - How to implement a confirmation dialog
 
 This example demonstrates how to use the [DxPopup](https://docs.devexpress.com/Blazor/DevExpress.Blazor.DxPopup) component to create a confirmation dialog for delete operations in DxScheduler.
