@@ -1,75 +1,18 @@
-<!-- default badges list -->
-[![](https://img.shields.io/badge/Open_in_DevExpress_Support_Center-FF7200?style=flat-square&logo=DevExpress&logoColor=white)](https://supportcenter.devexpress.com/ticket/details/T1183417)
-[![](https://img.shields.io/badge/📖_How_to_use_DevExpress_Examples-e9f6fc?style=flat-square)](https://docs.devexpress.com/GeneralInformation/403183)
-<!-- default badges end -->
 # Popup for Blazor - How to implement a confirmation dialog
 
-This example demonstrates how to use the [DxPopup](https://docs.devexpress.com/Blazor/DevExpress.Blazor.DxPopup) component to create a confirmation dialog for delete operations in DxScheduler.
+This example demonstrates how to use [Blazor Popup](https://docs.devexpress.com/Blazor/404363/components/dialogs-and-windows#popup) to create a [custom confirmation dialog](https://docs.devexpress.com/Blazor/404363/components/dialogs-and-windows/popup-based-confirmation-dialog) for delete operations in [Blazor Scheduler](https://docs.devexpress.com/Blazor/401179/components/scheduler).
 
-![DxPopup - Confirmation dialog](ConfirmationDialog.gif)
+![DxPopup - Confirmation dialog](ConfirmationDialog.png)
 
 ## Overview
 
 Follow the steps below to implement a confirmation dialog:
 
-1. Add the [DxPopup](https://docs.devexpress.com/Blazor/DevExpress.Blazor.DxPopup) component to the page and disable the default [close actions](CS/./Pages/ConfirmationDialog.razor#L4).
+1. Add the [DxPopup](https://docs.devexpress.com/Blazor/DevExpress.Blazor.DxPopup) component to the page, configure its user functionality, and add custom buttons the component's content area.
 
-2. Specify the component's [BodyContentTemplate](https://docs.devexpress.com/Blazor/DevExpress.Blazor.DxPopupBase.BodyContentTemplate) property and add two [custom confirmation buttons](CS/Pages/ConfirmationDialog.razor#L11) to the template.
+2. Handle the [DxSxheduler](https://docs.devexpress.com/Blazor/DevExpress.Blazor.DxScheduler) component's [AppointmentRemoving](https://docs.devexpress.com/Blazor/DevExpress.Blazor.DxScheduler.AppointmentRemoving) event to display a confirmation dialog when a user deletes an appointment.
 
-3. To display a confirmation dialog when a user deletes an appointment, handle the [DxSxheduler](https://docs.devexpress.com/Blazor/DevExpress.Blazor.DxScheduler) component's [AppointmentRemoving](https://docs.devexpress.com/Blazor/DevExpress.Blazor.DxScheduler.AppointmentRemoving) event. In the handler, asynchroniously call the **ConfirmOperation** method.
-
-    ```razor
-    @code {
-        // ...
-        async Task OnAppointmentRemoving(SchedulerAppointmentOperationEventArgs args) {
-        args.Cancel = !(await confDialog.ConfirmOperation("Delete an appointment",
-            "Are you sure you want to delete this appointment?"));
-    }
-        // ...
-    }
-    ```
-
-    The **ConfirmOperation** method uses a [TaskCompletionSource<TResult>](https://learn.microsoft.com/en-us/dotnet/api/system.threading.tasks.taskcompletionsource-1?view=net-7.0) object to create a task that is explicitly controlled by *TaskCompletionSource* methods.
-
-    ```razor
-    @code {
-        bool ConfirmationShown { get; set; } = false;
-        string HeaderText { get; set; } = string.Empty;
-        string BodyText { get; set; } = string.Empty;
-        TaskCompletionSource<bool> tcs;
-
-        public Task<bool> ConfirmOperation(string headerText, string bodyText) {
-            HeaderText = headerText;
-            BodyText = bodyText;
-            ConfirmationShown = true;
-            InvokeAsync(StateHasChanged);
-
-            tcs = new TaskCompletionSource<bool>();
-            tcs.Task.ContinueWith(_ => {
-                ConfirmationShown = false;
-            });
-            return tcs.Task;
-        }
-        // ...
-    }
-    ```
-
-4. On a custom button click, call the [SetResult](https://learn.microsoft.com/en-us/dotnet/api/system.threading.tasks.taskcompletionsource-1.setresult?view=net-7.0#system-threading-tasks-taskcompletionsource-1-setresult(-0)) method and pass the corresponding resulting value to the task. Based on the result, DxScheduler deletes the appointment or cancels the delete operation.
-
-    ```razor
-    @code {
-        // ...
-        private void YesClick() {
-            tcs.SetResult(true);
-        }
-        private void NoClick() {
-            tcs.SetResult(false);
-        }
-        public void Dispose() {
-            tcs = null;
-        }
-    }
-    ```
+3. Create a [task](https://learn.microsoft.com/en-us/dotnet/api/system.threading.tasks.taskcompletionsource-1?view=net-7.0) that deletes an appointment or cancels the current delete operation on the corresponding button click.
 
 ## Files to Review
 
@@ -78,5 +21,5 @@ Follow the steps below to implement a confirmation dialog:
 
 ## Documentation
 
-- [DxPopup - Show and Close a Popup](https://docs.devexpress.com/Blazor/DevExpress.Blazor.DxPopup#show-and-close-a-popup)
+- [Implement a Confirmation Dialog Based on Blazor Popup](https://docs.devexpress.com/Blazor/404363/components/dialogs-and-windows/popup-based-confirmation-dialog)
 - [DxScheduler - Manage Appointments](https://docs.devexpress.com/Blazor/DevExpress.Blazor.DxScheduler?#manage-appointments)
