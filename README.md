@@ -5,7 +5,7 @@
 <!-- default badges end -->
 # Popup for Blazor - How to implement a confirmation dialog
 
-This example demonstrates how to use DevExpress [Blazor Popup](https://docs.devexpress.com/Blazor/404363/components/dialogs-and-windows#popup) to create a [custom confirmation dialog](https://docs.devexpress.com/Blazor/404363/components/dialogs-and-windows/popup-based-confirmation-dialog) for delete operations in DevExpress [Blazor Scheduler](https://docs.devexpress.com/Blazor/401179/components/scheduler).
+This example demonstrates how to use DevExpress [Blazor Popup](https://docs.devexpress.com/Blazor/404363/components/dialogs-and-windows#popup) to create a [custom confirmation dialog](https://docs.devexpress.com/Blazor/404497/components/dialogs-and-windows/popup-based-confirmation-dialog) for delete operations in DevExpress [Blazor Scheduler](https://docs.devexpress.com/Blazor/401179/components/scheduler).
 
 ![DxPopup - Confirmation dialog](ConfirmationDialog.png)
 
