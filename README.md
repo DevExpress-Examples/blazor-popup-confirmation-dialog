@@ -27,3 +27,7 @@ Follow the steps below to implement a confirmation dialog:
 
 - [Implement a Confirmation Dialog Based on Blazor Popup](https://docs.devexpress.com/Blazor/404363/components/dialogs-and-windows/popup-based-confirmation-dialog)
 - [DxScheduler - Manage Appointments](https://docs.devexpress.com/Blazor/DevExpress.Blazor.DxScheduler?#manage-appointments)
+
+## More Examples
+
+- [Grid for Blazor - Create a custom record deletion confirmation dialog](https://github.com/DevExpress-Examples/blazor-dxgrid-show-custom-confirmation-dialog)
