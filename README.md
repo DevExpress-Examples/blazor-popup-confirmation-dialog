@@ -27,7 +27,7 @@ Follow the steps below to implement a confirmation dialog:
 ## Documentation
 
 - [Implement a Confirmation Dialog Based on Blazor Popup](https://docs.devexpress.com/Blazor/404363/components/dialogs-and-windows/popup-based-confirmation-dialog)
-- [DxScheduler - Manage Appointments](https://docs.devexpress.com/Blazor/DevExpress.Blazor.DxScheduler?#manage-appointments)
+- [DxScheduler - Manage Appointments](https://docs.devexpress.com/Blazor/404770/components/scheduler/appointments#manage-appointments)
 
 ## More Examples
 
