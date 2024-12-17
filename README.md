@@ -34,7 +34,7 @@ Follow the steps below to implement a confirmation dialog:
     </DxPopup>  
     ```
 
-2. Handle the [DxSxheduler](https://docs.devexpress.com/Blazor/DevExpress.Blazor.DxScheduler) component's [AppointmentRemoving](https://docs.devexpress.com/Blazor/DevExpress.Blazor.DxScheduler.AppointmentRemoving) event to display a confirmation dialog when a user attempts to delete an appointment.
+2. Handle the [DxSсheduler](https://docs.devexpress.com/Blazor/DevExpress.Blazor.DxScheduler) component's [AppointmentRemoving](https://docs.devexpress.com/Blazor/DevExpress.Blazor.DxScheduler.AppointmentRemoving) event to display a confirmation dialog when a user attempts to delete an appointment.
 
     ```html
     <DxScheduler AppointmentRemoving="OnAppointmentRemoving" ...
