@@ -14,7 +14,7 @@ This example demonstrates how to use DevExpress [Blazor Popup](https://docs.deve
 
 Follow the steps below to implement a confirmation dialog:
 
-1. Add a [DxPopup](https://docs.devexpress.com/Blazor/DevExpress.Blazor.DxPopup) component to the page, disable default user actions that dismiss the popup, and add custom buttons to the component's content area.
+1. Creare a confirmation dialog component (`ConfirmationDialog`). Populate it with a [DxPopup](https://docs.devexpress.com/Blazor/DevExpress.Blazor.DxPopup) component, disable default user actions that dismiss the popup, and add custom buttons to the component's content area.
 
     ```html
     <DxPopup @bind-Visible="@ConfirmationShown" 
