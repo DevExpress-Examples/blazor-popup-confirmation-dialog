@@ -81,8 +81,8 @@ Follow the steps below to implement a confirmation dialog:
 
 ## Files to Review
 
-- [ConfirmationDialog.razor](CS/Pages/ConfirmationDialog.razor)
-- [Index.razor](CS/Pages/Index.razor)
+- [ConfirmationDialog.razor](CS/Components/Pages/ConfirmationDialog.razor)
+- [Index.razor](CS/Components/Pages/Index.razor)
 
 ## Documentation
 
